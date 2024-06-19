@@ -3,8 +3,11 @@ import { IsString, IsEmail, IsStrongPassword } from "class-validator";
 
 export class RegisterUser_Dto {
 
-    @IsString()
+   @IsString()
     name: string;
+
+    @IsString()
+    last_name: string;
 
     @IsString()
     @IsEmail()
