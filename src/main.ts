@@ -23,7 +23,6 @@ async function bootstrap() {
     app.useGlobalFilters(new RPC_ExceptionFilter_Custom());
     app.useGlobalInterceptors(new ResponseInterceptor());
 
-
     app.useGlobalPipes(
         new ValidationPipe({
             whitelist: true,
