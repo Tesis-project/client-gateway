@@ -16,11 +16,12 @@ async function bootstrap() {
 
     app.setGlobalPrefix('api');
 
-        app.use(helmet());
+    app.use(helmet());
 
-        app.use(express.json({ limit: '10mb' }));
+    app.use(express.json({ limit: '10mb' }));
 
     app.useGlobalFilters(new RPC_ExceptionFilter_Custom());
+
     app.useGlobalInterceptors(new ResponseInterceptor());
 
     app.useGlobalPipes(
