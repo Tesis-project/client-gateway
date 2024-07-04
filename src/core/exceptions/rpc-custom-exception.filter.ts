@@ -1,7 +1,7 @@
 import { Catch, ArgumentsHost, ExceptionFilter, HttpStatus } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 
-import { _Response_I } from '@tesis-project/dev-globals/dist/interfaces';
+import { _Response_I } from '@tesis-project/dev-globals/dist/core/interfaces';
 
 @Catch(RpcException)
 export class RPC_ExceptionFilter_Custom implements ExceptionFilter {

@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Inject, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError } from 'rxjs';
-import { NATS_SERVICE } from '../../core/config/services';
-import { Auth } from '../../core/decorators';
+import { NATS_SERVICE } from '../../../core/config/services';
+import { Auth } from '../../../core/decorators';
 
-import { gw_UpdateUser_Dto } from './dto/UpdateUser.dto';
+import { gw_UpdateUser_Dto } from '../dto/UpdateUser.dto';
 
 import {
     Pagination_Dto
@@ -15,6 +15,7 @@ import {
 
 @Controller('user')
 export class UserController {
+
     constructor(
         @Inject(NATS_SERVICE) private readonly client: ClientProxy
     ) { }
