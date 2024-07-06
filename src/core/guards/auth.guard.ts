@@ -39,7 +39,14 @@ export class AuthGuard implements CanActivate {
                 this.client.send('auth.verify.user', token)
             )
 
-            request['user'] = user
+            request['auth_user'] = {
+                email: user.email,
+                created_at: user.created_at,
+                status: user.status,
+                user: user.user,
+                _id: user._id
+            }
+
             request['token'] = newToken;
 
         } catch {

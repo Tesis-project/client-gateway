@@ -1,32 +1,32 @@
-
-import { Controller, Get, Inject, Param, ParseUUIDPipe } from "@nestjs/common";
+import { Controller, Inject, Get, Param, ParseUUIDPipe, Body, Post } from "@nestjs/common";
 import { ClientProxy, RpcException } from "@nestjs/microservices";
-import { catchError } from "rxjs";
-
 import { User_I } from "@tesis-project/dev-globals/dist/modules/user/interfaces";
-
 import { NATS_SERVICE } from "../../../core/config/services";
 import { Auth } from "../../../core/decorators";
 import { User_Auth } from "../../auth/decorators";
 
+import { Update_Bank_Data_Dto } from "@tesis-project/dev-globals/dist/modules/user/dto";
+import { catchError } from "rxjs";
+
 
 @Auth()
-@Controller('user/hiring-data')
-export class Hiring_Data_Controller {
+@Controller('user/hiring-data/bank')
+export class Bank_Data_Controller {
 
     constructor(
         @Inject(NATS_SERVICE) private readonly client: ClientProxy
     ) { }
 
-    @Get(':id')
-    get_hiring_data(
-        @Param('id', ParseUUIDPipe) id: string,
+    @Post(':hiring_id')
+    save_bank_data(
+        @Param('hiring_id', ParseUUIDPipe) hiring_id: string,
+        @Body() Update_Bank_Data_Dto: Update_Bank_Data_Dto,
         @User_Auth() user_auth: User_I
-
     ) {
 
-        return this.client.send( 'user.hiring_data.get_one', {
-            _id: id,
+        return this.client.send( 'user.hiring_data.bank.save', {
+            hiring_id,
+            bank: Update_Bank_Data_Dto,
             user_auth
         }).pipe(
             catchError(err => {
@@ -37,5 +37,3 @@ export class Hiring_Data_Controller {
     }
 
 }
-
-

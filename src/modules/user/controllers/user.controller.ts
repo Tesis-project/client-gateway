@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, ParseUUIDPipe, Put, Query } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError } from 'rxjs';
 import { NATS_SERVICE } from '../../../core/config/services';
@@ -10,8 +10,6 @@ import {
     Pagination_Dto
 } from '@tesis-project/dev-globals/dist/core/dto';
 
-
-// CreateUserDto
 
 @Controller('user')
 export class UserController {

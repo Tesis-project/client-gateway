@@ -1,9 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Inject, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Inject, ParseUUIDPipe } from '@nestjs/common';
 
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { NATS_SERVICE } from '../../core/config/services';
 import { catchError } from 'rxjs';
-import { Create_Profile_Dto } from '@tesis-project/dev-globals/dist/modules/profile/dto';
 import { gw_UpdateProfileDto } from './dto/update-profile.dto';
 
 @Controller('profile')

@@ -1,11 +1,12 @@
 import { Controller, Get, Post, Body, Inject } from '@nestjs/common';
-import { Token, User } from './decorators';
+import { Token, User_Auth } from './decorators';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { NATS_SERVICE } from '../../core/config/services';
 import { catchError } from 'rxjs';
 import { Auth } from '../../core/decorators';
 
 import { LoginAuth_Dto, RegisterAuth_Dto } from '@tesis-project/dev-globals/dist/modules/auth/dto';
+import { User_I } from '@tesis-project/dev-globals/dist/modules/user/interfaces';
 
 
 @Controller('auth')
@@ -35,7 +36,7 @@ export class AuthController {
 
     @Auth()
     @Get('verify')
-    verifyUser(@Token() token: string, @User() user: any) {
+    verifyUser(@Token() token: string, @User_Auth() user: User_I) {
 
         return {
             user,
