@@ -1,12 +1,13 @@
 import { Controller, Get, Post, Body, Inject } from '@nestjs/common';
-import { Token, User_Auth } from './decorators';
+import {  User_Auth } from './decorators';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { NATS_SERVICE } from '../../core/config/services';
 import { catchError } from 'rxjs';
 import { Auth } from '../../core/decorators';
 
 import { LoginAuth_Dto, RegisterAuth_Dto } from '@tesis-project/dev-globals/dist/modules/auth/dto';
-import { User_I } from '@tesis-project/dev-globals/dist/modules/user/interfaces';
+import { Session_Auth_I } from '@tesis-project/dev-globals/dist/modules/auth/interfaces';
+import { _Response_I } from '@tesis-project/dev-globals/dist/core/interfaces';
 
 
 @Controller('auth')
@@ -36,12 +37,16 @@ export class AuthController {
 
     @Auth()
     @Get('verify')
-    verifyUser(@Token() token: string, @User_Auth() user: User_I) {
+    verifyUser( @User_Auth() auth: Session_Auth_I ) {
 
-        return {
-            user,
-            token
-        }
+        const resp: _Response_I<Session_Auth_I> = {
+            ok: true,
+            statusCode: 200,
+            message: 'Token verify',
+            data: auth
+        };
+
+        return resp;
 
     }
 }

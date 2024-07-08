@@ -12,6 +12,9 @@ import { Request } from 'express';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { NATS_SERVICE } from '../config/services';
+import { _Response_I } from '@tesis-project/dev-globals/dist/core/interfaces';
+
+import { Session_Auth_I } from '@tesis-project/dev-globals/dist/modules/auth/interfaces';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -28,26 +31,26 @@ export class AuthGuard implements CanActivate {
         const token = this.extractTokenFromHeader(request);
 
         if (!token) {
-
             throw new UnauthorizedException('Token not found');
-
         }
 
         try {
 
-            const {user, token: newToken } = await firstValueFrom(
+            const resp: _Response_I<Session_Auth_I> = await firstValueFrom(
                 this.client.send('auth.verify.user', token)
-            )
+            );
+
+            const auth = resp.data;
 
             request['auth_user'] = {
-                email: user.email,
-                created_at: user.created_at,
-                status: user.status,
-                user: user.user,
-                _id: user._id
+                email: auth.email,
+                created_at: auth.created_at,
+                status: auth.status,
+                user: auth.user,
+                _id: auth._id,
+                token: auth.token
             }
 
-            request['token'] = newToken;
 
         } catch {
 
