@@ -51,7 +51,6 @@ export class AuthGuard implements CanActivate {
                 token: auth.token
             }
 
-
         } catch {
 
             throw new UnauthorizedException();

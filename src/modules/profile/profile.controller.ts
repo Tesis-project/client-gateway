@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Patch, Param, Inject, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Inject, ParseUUIDPipe, Put } from '@nestjs/common';
 
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { NATS_SERVICE } from '../../core/config/services';
@@ -36,7 +36,7 @@ export class ProfileController {
 
     }
 
-    @Patch(':id')
+    @Put(':id')
     update(@Param('id', ParseUUIDPipe) id: string, @Body() updateProfileDto: gw_UpdateProfileDto) {
     // update(@Param('id', ParseUUIDPipe) id: string, @Body() updateProfileDto: any) {
 

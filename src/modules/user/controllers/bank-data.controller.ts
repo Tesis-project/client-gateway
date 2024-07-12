@@ -1,4 +1,4 @@
-import { Controller, Inject, Get, Param, ParseUUIDPipe, Body, Post } from "@nestjs/common";
+import { Controller, Inject, Get, Param, ParseUUIDPipe, Body, Post, Delete } from "@nestjs/common";
 import { ClientProxy, RpcException } from "@nestjs/microservices";
 import { User_I } from "@tesis-project/dev-globals/dist/modules/user/interfaces";
 import { NATS_SERVICE } from "../../../core/config/services";
@@ -35,5 +35,40 @@ export class Bank_Data_Controller {
         )
 
     }
+
+    @Get(':hiring_id')
+    find_all(
+        @Param('hiring_id', ParseUUIDPipe) hiring_id: string,
+        @User_Auth() user_auth: User_I
+    ) {
+
+        return this.client.send( 'user.hiring_data.bank.find_all', {
+            hiring_id,
+            user_auth
+        }).pipe(
+            catchError(err => {
+                throw new RpcException(err)
+            })
+        )
+
+    }
+
+    @Delete(':bank_id')
+    delete_paymentInfo(
+        @Param('bank_id', ParseUUIDPipe) bank_id: string,
+        @User_Auth() user_auth: User_I
+    ) {
+
+        return this.client.send( 'user.hiring_data.bank.delete_paymentInfo', {
+            bank_id,
+            user_auth
+        }).pipe(
+            catchError(err => {
+                throw new RpcException(err)
+            })
+        )
+
+    }
+
 
 }
