@@ -8,6 +8,7 @@ import helmet from "helmet";
 import { envs } from './core/config/envs';
 import { ResponseInterceptor } from './core/interceptors';
 import { RPC_ExceptionFilter_Custom } from './core/exceptions';
+import { Media_Format_Enum } from '@tesis-project/dev-globals/dist/modules/media/interfaces';
 
 async function bootstrap() {
     const logger = new Logger('Client gateway - Main')
@@ -50,6 +51,7 @@ async function bootstrap() {
     await app.listen(envs.port);
 
     logger.log(`Server is running on ${await app.getUrl()}`);
+
 
 }
 
