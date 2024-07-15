@@ -27,7 +27,7 @@ export const fileValidatorFilter = (req, file, callback) => {
 
     }
 
-    if (file.size > MAX_FILE_SIZE) { // 10 MB (convertido a bytes)
+    if (file.size > MAX_FILE_SIZE) {
 
         const response = {
             ok: false,

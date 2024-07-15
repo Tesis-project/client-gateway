@@ -4,7 +4,9 @@ import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { NATS_SERVICE } from '../../core/config/services';
 import { catchError } from 'rxjs';
 import { gw_UpdateProfileDto } from './dto/update-profile.dto';
+import { Auth } from '../../core/decorators';
 
+@Auth()
 @Controller('profile')
 export class ProfileController {
 
