@@ -32,9 +32,15 @@ export class MediaController {
 
             const { storageFile, contentType } = resp.data;
 
+            const buffer = Buffer.from(storageFile, 'base64');
+
             res.setHeader('Content-Type', contentType);
-            res.setHeader('Cache-Control', 'max-age=60d');
-            res.end(Buffer.from(storageFile, 'base64'));
+      res.setHeader('Cache-Control', 'max-age=60d');
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Content-Security-Policy', "default-src 'self'; img-src * data:;");
+
+
+            res.end(buffer);
 
         } catch (error) {
             console.log('el error', error);
