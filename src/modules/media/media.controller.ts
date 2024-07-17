@@ -1,5 +1,5 @@
 
-import { BadRequestException, Body, Controller, Delete, Get, HttpStatus, Inject, Param, ParseUUIDPipe, Post, Put, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Inject, Param, ParseUUIDPipe, Post, Put, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { NATS_SERVICE } from '../../core/config/services';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -16,7 +16,6 @@ import { User_I } from '@tesis-project/dev-globals/dist/modules/user/interfaces'
 import { Auth } from '../../core/decorators';
 
 
-@Auth()
 @Controller('media')
 export class MediaController {
 
@@ -24,25 +23,18 @@ export class MediaController {
         @Inject(NATS_SERVICE) private readonly client: ClientProxy
     ) { }
 
-   @Get('serve/file/:id')
+    @Get('serve/file/:id')
     async serveFile(@Param('id', ParseUUIDPipe) _id: string, @Res() res: Response) {
 
-          try {
+        try {
 
-            const resp = await firstValueFrom(
-                this.client.send('media.serve.file', {
-                    _id
-                })
-            );
+            const resp = await firstValueFrom(this.client.send('media.serve.file', { _id }));
 
-            const {
-                storageFile,
-                contentType
-            } = resp.data;
+            const { storageFile, contentType } = resp.data;
 
-              res.setHeader("Content-Type", contentType);
-    res.setHeader("Cache-Control", "max-age=60d");
-    res.end(storageFile.buffer);
+            res.setHeader('Content-Type', contentType);
+            res.setHeader('Cache-Control', 'max-age=60d');
+            res.end(Buffer.from(storageFile, 'base64'));
 
         } catch (error) {
             console.log('el error', error);
@@ -51,6 +43,7 @@ export class MediaController {
 
     }
 
+    @Auth()
     @Post('single')
     @UseInterceptors(FileInterceptor('file', { fileFilter: fileValidatorFilter }))
     async uploadFile(
@@ -62,7 +55,7 @@ export class MediaController {
             throw new BadRequestException('No file uploaded');
         }
 
-      const fileBase64 = file.buffer.toString('base64');
+        const fileBase64 = file.buffer.toString('base64');
 
         return this.client.send('media.create.single', {
             file: {
@@ -80,6 +73,7 @@ export class MediaController {
         );
     }
 
+    @Auth()
     @Put('single/:id')
     @UseInterceptors(FileInterceptor('file', { fileFilter: fileValidatorFilter }))
     async update_file(@Param('id', ParseUUIDPipe) _id: string, @UploadedFile() file: Express.Multer.File, @User_Auth() user_auth: User_I) {
@@ -100,6 +94,7 @@ export class MediaController {
 
     }
 
+    @Auth()
     @Delete('single/:id')
     async delete_file(@Param('id', ParseUUIDPipe) _id: string, @User_Auth() user_auth: User_I) {
 
