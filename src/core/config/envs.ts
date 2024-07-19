@@ -16,6 +16,13 @@ interface EnvVars_I {
     NATS_SERVERS: string[];
 
     NODE_ENV: NodeEnv;
+
+        BLAZE_APPLICATION_KEY_ID: string;
+    BLAZE_APPLICATION_KEY: string;
+    BLAZE_BUCKET: string;
+    BLAZE_BUCKET_ID: string;
+
+
 }
 
 const envsSchema = joi.object({
@@ -25,6 +32,11 @@ const envsSchema = joi.object({
 
     NODE_ENV: joi.string().valid(NodeEnv.DEVELOPMENT, NodeEnv.STAGING, NodeEnv.PRODUCTION).required(),
 
+
+        BLAZE_APPLICATION_KEY_ID: joi.string().required(),
+    BLAZE_APPLICATION_KEY: joi.string().required(),
+    BLAZE_BUCKET: joi.string().required(),
+    BLAZE_BUCKET_ID: joi.string().required(),
 
 }).unknown(true);
 
@@ -50,5 +62,10 @@ export const envs = {
     natsServers: envVars.NATS_SERVERS,
 
     nodeEnv: envVars.NODE_ENV,
+
+        blaze_application_key_id: envVars.BLAZE_APPLICATION_KEY_ID,
+    blaze_application_key: envVars.BLAZE_APPLICATION_KEY,
+    blaze_bucket: envVars.BLAZE_BUCKET,
+    blaze_bucket_id: envVars.BLAZE_BUCKET_ID,
 
 }

@@ -5,6 +5,7 @@ import { NatsModule } from '../../core/transports/nats.module';
 
 @Module({
     controllers: [MediaController],
+    providers: [],
     imports: [
         NatsModule
     ]

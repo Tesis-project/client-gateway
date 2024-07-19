@@ -14,33 +14,48 @@ import { catchError, firstValueFrom } from 'rxjs';
 import { User_Auth } from '../auth/decorators';
 import { User_I } from '@tesis-project/dev-globals/dist/modules/user/interfaces';
 import { Auth } from '../../core/decorators';
+import { _Response_I } from '@tesis-project/dev-globals/dist/core/interfaces';
+import { Media_I } from '@tesis-project/dev-globals/dist/modules/media/interfaces';
 
 
 @Controller('media')
 export class MediaController {
 
     constructor(
-        @Inject(NATS_SERVICE) private readonly client: ClientProxy
+        @Inject(NATS_SERVICE) private readonly client: ClientProxy,
     ) { }
 
-    @Get('serve/file/:id')
+    @Get('meta/file/:id')
+    async get_oneFileMeta(@Param('id', ParseUUIDPipe) _id: string) {
+
+        return this.client.send('media.get_meta.file', { _id }).pipe(
+            catchError(err => {
+                throw new RpcException(err);
+            })
+        );
+
+    }
+
+/*     @Get('serve/file/:id')
     async serveFile(@Param('id', ParseUUIDPipe) _id: string, @Res() res: Response) {
 
         try {
 
-            const resp = await firstValueFrom(this.client.send('media.serve.file', { _id }));
+            const { data }: _Response_I<any> = await firstValueFrom(this.client.send('media.serve.file', { _id }));
 
-            const { storageFile, contentType } = resp.data;
-
-            const buffer = Buffer.from(storageFile, 'base64');
+            const buffer = data.storageFile;
+            const contentType = data.contentType;
+            const format = data.format;
+            const file = data.file;
 
             res.setHeader('Content-Type', contentType);
-      res.setHeader('Cache-Control', 'max-age=60d');
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Content-Security-Policy', "default-src 'self'; img-src * data:;");
+            res.setHeader('Cache-Control', 'max-age=60d');
+            res.setHeader('Access-Control-Allow-Methods', 'GET');
+            //   res.setHeader('Access-Control-Allow-Origin', '*');
+            //   res.setHeader('Content-Security-Policy', "default-src 'self'; img-src * data:;");
+            res.setHeader('Content-Disposition', `inline; filename="${file}"`);
 
-
-            res.end(buffer);
+            res.send(Buffer.from(buffer, 'base64'));
 
         } catch (error) {
             console.log('el error', error);
@@ -48,6 +63,7 @@ export class MediaController {
         }
 
     }
+ */
 
     @Auth()
     @Post('single')
