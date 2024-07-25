@@ -47,6 +47,7 @@ export class AuthGuard implements CanActivate {
                 created_at: auth.created_at,
                 status: auth.status,
                 user: auth.user,
+                role: auth.role,
                 _id: auth._id,
                 token: auth.token
             }

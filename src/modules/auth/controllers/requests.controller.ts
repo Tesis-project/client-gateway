@@ -3,7 +3,10 @@ import { ClientProxy, RpcException } from "@nestjs/microservices";
 import { NATS_SERVICE } from "../../../core/config/services";
 import { catchError } from "rxjs";
 
-import { Create_Password_Request_Dto, Accept_Password_Request_Dto } from '@tesis-project/dev-globals/dist/modules/auth/dto'
+import { Create_Password_Request_Dto, Accept_Password_Request_Dto, Create_Request_Key_Dto } from '@tesis-project/dev-globals/dist/modules/auth/dto'
+import { User_Auth } from "../decorators";
+import { User_I } from "@tesis-project/dev-globals/dist/modules/user/interfaces";
+import { Auth } from "../../../core/decorators";
 
 
 @Controller('auth/requests')
@@ -25,11 +28,9 @@ export class RequestsController {
 
     }
 
-   /*  @Auth()
+    @Auth()
     @Post('create')
     create_request(@Body() create_request_dto: Create_Request_Key_Dto, @User_Auth() user_auth: User_I) {
-
-        console.log('user_auth', user_auth);
 
         return this.client.send('auth.requests.create', {
             data: create_request_dto,
@@ -40,7 +41,7 @@ export class RequestsController {
             })
         )
 
-    } */
+    }
 
 
     // @Auth()

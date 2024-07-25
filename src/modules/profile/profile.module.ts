@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ProfileController } from './profile.controller';
 import { NatsModule } from '../../core/transports/nats.module';
+import { MetaRoleController } from './controllers/meta-role.controller';
+import { ProfileController } from './controllers/profile.controller';
 
 @Module({
-    controllers: [ProfileController],
+    controllers: [ProfileController, MetaRoleController],
     providers: [],
     imports: [
         NatsModule

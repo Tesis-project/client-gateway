@@ -5,7 +5,7 @@ import { NatsModule } from '../../core/transports/nats.module';
 
 @Module({
     controllers: [
-        // NotificationsController,
+        NotificationsController,
         // EmailingController
     ],
     providers: [],

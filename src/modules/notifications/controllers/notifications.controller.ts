@@ -1,10 +1,9 @@
 
-import { Body, Controller, Delete, Get, Inject, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common';
+import { Controller, Delete, Get, Inject, Param, ParseUUIDPipe, Put } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError } from 'rxjs';
 import { NATS_SERVICE } from '../../../core/config/services';
 import { User_I } from '@tesis-project/dev-globals/dist/modules/user/interfaces';
-import { Create_Notification_Dto } from "@tesis-project/dev-globals/dist/modules/notifications/dto";
 import { User_Auth } from '../../auth/decorators';
 import { Auth } from '../../../core/decorators';
 

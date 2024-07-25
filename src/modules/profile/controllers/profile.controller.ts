@@ -2,19 +2,19 @@
 import { Controller, Get, Body, Param, Inject, ParseUUIDPipe, Put, Post, UseInterceptors, UploadedFile, Delete } from '@nestjs/common';
 
 import { ClientProxy, RpcException } from '@nestjs/microservices';
-import { NATS_SERVICE } from '../../core/config/services';
 import { catchError } from 'rxjs';
-import { gw_UpdateProfileDto } from './dto/update-profile.dto';
-import { Auth } from '../../core/decorators';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User_I } from '@tesis-project/dev-globals/dist/modules/user/interfaces';
-import { User_Auth } from '../auth/decorators';
 
 import {
     fileValidatorFilter_IMAGE,
     fileValidatorFilter_DOCUMENT,
     fileValidatorFilter_VIDEO
 } from '@tesis-project/dev-globals/dist/modules/media/validations';
+import { NATS_SERVICE } from '../../../core/config/services';
+import { Auth } from '../../../core/decorators';
+import { User_Auth } from '../../auth/decorators';
+import { gw_UpdateProfileDto } from '../dto/update-profile.dto';
 
 @Auth()
 @Controller('profile')
