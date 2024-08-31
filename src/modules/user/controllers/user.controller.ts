@@ -19,17 +19,6 @@ export class UserController {
         @Inject(NATS_SERVICE) private readonly client: ClientProxy
     ) { }
 
-
-    // @Post()
-    // create_user(@Body() registerUserDto: CreateUser_Dto) {
-
-    //     return {
-    //         message: 'Test',
-    //         ...registerUserDtoF
-    //     };
-
-    // }
-
     @Get()
     get_all_users(
         @Query() paginationDto: Pagination_Dto,
@@ -51,6 +40,18 @@ export class UserController {
     ) {
 
         return this.client.send('user.get_one', _id).pipe(
+            catchError(err => {
+                throw new RpcException(err)
+            })
+        )
+    }
+
+    @Get('profile/:id')
+    get_oneProfile(
+        @Param('id', ParseUUIDPipe) _id: string
+    ) {
+
+        return this.client.send('user.get_oneProfile', _id).pipe(
             catchError(err => {
                 throw new RpcException(err)
             })
