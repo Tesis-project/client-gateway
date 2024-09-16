@@ -4,6 +4,7 @@ import { UserModule } from './modules/user/user.module';
 import { ProfileModule } from './modules/profile/profile.module';
 import { MediaModule } from './modules/media/media.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { BusinessModule } from './modules/business/business.module';
 
 @Module({
     imports: [
@@ -11,7 +12,8 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
         UserModule,
         ProfileModule,
         MediaModule,
-        NotificationsModule
+        NotificationsModule,
+        BusinessModule
     ],
     controllers: [],
     providers: [],
