@@ -9,6 +9,7 @@ import { envs } from './core/config/envs';
 import { ResponseInterceptor } from './core/interceptors';
 import { RPC_ExceptionFilter_Custom } from './core/exceptions';
 import { Media_Format_Enum } from '@tesis-project/dev-globals/dist/modules/media/interfaces';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
     const logger = new Logger('Client gateway - Main')
@@ -36,9 +37,9 @@ async function bootstrap() {
     //     },
     // });
 
-      app.enableCors({
-    origin: '*', // ajusta según sea necesario
-  });
+    app.enableCors({
+        origin: '*', // ajusta según sea necesario
+    });
 
 
     app.use(express.json({ limit: '10mb' }));
@@ -52,7 +53,16 @@ async function bootstrap() {
             whitelist: true,
             forbidNonWhitelisted: true
         })
-    )
+    );
+
+    const config = new DocumentBuilder()
+        .setTitle('Api - Client gateway')
+        .setDescription('Endpoints funcionales para el Api Gateway de la aplicación de Melodify App')
+        .setVersion('1.0')
+        .build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, document);
+
     await app.listen(envs.port);
 
     logger.log(`Server is running on ${await app.getUrl()}`);

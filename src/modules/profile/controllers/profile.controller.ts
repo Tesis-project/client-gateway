@@ -15,7 +15,10 @@ import { NATS_SERVICE } from '../../../core/config/services';
 import { Auth } from '../../../core/decorators';
 import { User_Auth } from '../../auth/decorators';
 import { gw_UpdateProfileDto } from '../dto/update-profile.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+
+@ApiTags('Client gateway - Profile')
 @Auth()
 @Controller('profile')
 export class ProfileController {
@@ -25,6 +28,7 @@ export class ProfileController {
         @Inject(NATS_SERVICE) private readonly client: ClientProxy
     ) { }
 
+    @ApiOperation({ summary: 'Obtener información de perfil de un usuario por id' })
     @Get(':id')
     findOne(@Param('id', ParseUUIDPipe) id: string) {
 
@@ -36,6 +40,7 @@ export class ProfileController {
 
     }
 
+    @ApiOperation({ summary: 'Actualizar información de perfil de usuario' })
     @Put(':id')
     update(@Param('id', ParseUUIDPipe) id: string, @Body() updateProfileDto: gw_UpdateProfileDto) {
 
@@ -50,6 +55,7 @@ export class ProfileController {
 
     }
 
+    @ApiOperation({ summary: 'Definir foto de perfil de un usuario' })
     @Post('profile_pic')
     @UseInterceptors(FileInterceptor('file', { fileFilter: fileValidatorFilter_IMAGE }))
     async profile_pic(
@@ -77,6 +83,7 @@ export class ProfileController {
 
     }
 
+    @ApiOperation({ summary: 'Definir foto de portada de un usuario' })
     @Post('profile_cover')
     @UseInterceptors(FileInterceptor('file', { fileFilter: fileValidatorFilter_IMAGE }))
     async profile_cover(
@@ -104,6 +111,7 @@ export class ProfileController {
 
     }
 
+    @ApiOperation({ summary: 'Definir credenciales de identidad de un usuario' })
     @Post('credentials_identity_file')
     @UseInterceptors(FileInterceptor('file', { fileFilter: fileValidatorFilter_DOCUMENT }))
     async credentials_identity_file(
@@ -131,6 +139,7 @@ export class ProfileController {
 
     }
 
+    @ApiOperation({ summary: 'Definir credenciales profesionales de un usuario' })
     @Post('profesional_file')
     @UseInterceptors(FileInterceptor('file', { fileFilter: fileValidatorFilter_DOCUMENT }))
     async profesional_file(
@@ -158,6 +167,7 @@ export class ProfileController {
 
     }
 
+    @ApiOperation({ summary: 'Definir contenido de galeria de imágenes' })
     @Post('image_gallery')
     @UseInterceptors(FileInterceptor('file', { fileFilter: fileValidatorFilter_IMAGE }))
     async add_image_gallery(
@@ -185,6 +195,7 @@ export class ProfileController {
 
     }
 
+            @ApiOperation({ summary: 'Eliminar contenido de galeria de imágenes' })
     @Delete('image_gallery/:id')
     async remove_image_gallery(
         @Param('id', ParseUUIDPipe) _id: string,
@@ -202,6 +213,7 @@ export class ProfileController {
 
     }
 
+    @ApiOperation({ summary: 'Definir contenido de galeria de videos' })
     @Post('video_gallery')
     @UseInterceptors(FileInterceptor('file', { fileFilter: fileValidatorFilter_VIDEO }))
     async add_video_gallery(
@@ -229,6 +241,7 @@ export class ProfileController {
 
     }
 
+    @ApiOperation({ summary: 'Eliminar contenido de galeria de videos' })
     @Delete('video_gallery/:id')
     async remove_video_gallery(
         @Param('id', ParseUUIDPipe) _id: string,

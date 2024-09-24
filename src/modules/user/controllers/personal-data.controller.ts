@@ -8,8 +8,10 @@ import { NATS_SERVICE } from "../../../core/config/services";
 import { User_I } from "@tesis-project/dev-globals/dist/modules/user/interfaces";
 import { Update_Personal_Data_Dto } from "@tesis-project/dev-globals/dist/modules/user/dto";
 import { User_Auth } from "../../auth/decorators";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
 
+@ApiTags('Client gateway - User - /hiring-data/personal')
 @Auth()
 @Controller('user/hiring-data/personal')
 export class Personal_Data_Controller {
@@ -19,6 +21,7 @@ export class Personal_Data_Controller {
         @Inject(NATS_SERVICE) private readonly client: ClientProxy
     ) { }
 
+        @ApiOperation({ summary: 'Guardar información de contratación personal de usuario' })
     @Post(':hiring_id')
     save_personal(
         @Param('hiring_id', ParseUUIDPipe) hiring_id: string,

@@ -1,6 +1,6 @@
 
 
-import { Body, Controller, Get, Inject, Param, Post, Query } from "@nestjs/common";
+import { Body, Controller, Inject, Post, Query } from "@nestjs/common";
 import { ClientProxy, RpcException } from "@nestjs/microservices";
 import { NATS_SERVICE } from "../../../core/config/services";
 
@@ -8,8 +8,10 @@ import { Pagination_Dto } from "@tesis-project/dev-globals/dist/core/dto";
 import { SearchUser_Dto } from "@tesis-project/dev-globals/dist/modules/user/dto/search-user.dto";
 
 import { catchError } from "rxjs";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
 
+@ApiTags('Client gateway - User - /search')
 @Controller('user/search')
 export class UserSearchController {
 
@@ -17,6 +19,7 @@ export class UserSearchController {
         @Inject(NATS_SERVICE) private readonly client: ClientProxy
     ) { }
 
+        @ApiOperation({ summary: 'Obtener todos los usuarios por tipo' })
     @Post('type')
     get_all(
         @Body() SearchUser_Dto: SearchUser_Dto,
@@ -35,6 +38,7 @@ export class UserSearchController {
         )
     }
 
+    @ApiOperation({ summary: 'Obtener todos los usuarios por término' })
     @Post('term')
     get_byTerm(
         @Query() paginationDto: Pagination_Dto,

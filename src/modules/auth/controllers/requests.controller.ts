@@ -7,8 +7,9 @@ import { Create_Password_Request_Dto, Accept_Password_Request_Dto, Create_Reques
 import { User_Auth } from "../decorators";
 import { User_I } from "@tesis-project/dev-globals/dist/modules/user/interfaces";
 import { Auth } from "../../../core/decorators";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
-
+@ApiTags('Client gateway - Auth - /requests')
 @Controller('auth/requests')
 export class RequestsController {
 
@@ -17,6 +18,7 @@ export class RequestsController {
         @Inject(NATS_SERVICE) private readonly client: ClientProxy
     ) { }
 
+    @ApiOperation({ summary: 'Crear solicitud de contraseña olvidada' })
     @Post('pass_request')
     create_password_request(@Body() create_request_dto: Create_Password_Request_Dto) {
 
@@ -28,6 +30,7 @@ export class RequestsController {
 
     }
 
+    @ApiOperation({ summary: 'Crear solicitud de cambio de email' })
     @Auth()
     @Post('create')
     create_request(@Body() create_request_dto: Create_Request_Key_Dto, @User_Auth() user_auth: User_I) {
@@ -44,7 +47,7 @@ export class RequestsController {
     }
 
 
-    // @Auth()
+    @ApiOperation({ summary: 'Obtener solicitud por key' })
     @Get(':key')
     get_request(@Param('key') key: string) {
 
@@ -58,7 +61,7 @@ export class RequestsController {
 
     }
 
-    // @Auth()
+    @ApiOperation({ summary: 'Verificar solicitud por key' })
     @Put('verify/:key')
     verify_request(@Param('key') key: string) {
 
@@ -72,6 +75,8 @@ export class RequestsController {
 
     }
 
+
+    @ApiOperation({ summary: 'Verificar solicitud de cambio de contraseña' })
     @Put('verify_pass/:key')
     verify_pass_request(
         @Param('key') key: string,

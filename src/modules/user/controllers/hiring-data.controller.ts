@@ -8,8 +8,10 @@ import { User_I } from "@tesis-project/dev-globals/dist/modules/user/interfaces"
 import { NATS_SERVICE } from "../../../core/config/services";
 import { Auth } from "../../../core/decorators";
 import { User_Auth } from "../../auth/decorators";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
 
+@ApiTags('Client gateway - User - /hiring-data')
 @Auth()
 @Controller('user/hiring-data')
 export class Hiring_Data_Controller {
@@ -18,6 +20,7 @@ export class Hiring_Data_Controller {
         @Inject(NATS_SERVICE) private readonly client: ClientProxy
     ) { }
 
+        @ApiOperation({ summary: 'Obtener información de contratación de un usuario por id' })
     @Get(':id')
     get_hiring_data(
         @Param('id', ParseUUIDPipe) id: string,

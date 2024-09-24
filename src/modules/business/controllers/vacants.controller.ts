@@ -1,6 +1,6 @@
 
 
-import { Controller, Inject, Get, Param, ParseUUIDPipe, Put, Delete, Post, Body, UploadedFile, UseInterceptors, UsePipes } from "@nestjs/common"
+import { Controller, Inject, Get, Param, ParseUUIDPipe, Put, Delete, Post, Body, UploadedFile, UseInterceptors } from "@nestjs/common"
 import { ClientProxy, RpcException } from "@nestjs/microservices"
 import { catchError } from "rxjs"
 import { NATS_SERVICE } from "../../../core/config/services"
@@ -15,11 +15,12 @@ import { Create_Vacant_Dto } from '@tesis-project/dev-globals/dist/modules/busin
 
 import { ParseBodyInterceptor } from '@tesis-project/dev-globals/dist/core/interceptors';
 
-import { Body_Create_Vacant_Dto } from "../dto/Create-Vacant.dto"
 
 import { Search_Vacant_Dto } from '@tesis-project/dev-globals/dist/modules/business/vacants/dto';
+import { ApiOperation, ApiTags } from "@nestjs/swagger"
 
 
+@ApiTags('Client gateway - Business - /vacants')
 @Controller('business/vacants')
 export class Business_Vacants_Controller {
 
@@ -28,10 +29,11 @@ export class Business_Vacants_Controller {
         @Inject(NATS_SERVICE) private readonly client: ClientProxy
     ) { }
 
+    @ApiOperation({ summary: 'Crear vacante laboral' })
     @Auth()
     @Post('create')
     @UseInterceptors(FileInterceptor('file', { fileFilter: fileValidatorFilter_IMAGE }), ParseBodyInterceptor)
-    async add_image_gallery(
+    async create_vacant(
         @UploadedFile() file: Express.Multer.File,
         @Body() createVacantDto: Create_Vacant_Dto,
         @User_Auth() user_auth: User_I
@@ -61,6 +63,7 @@ export class Business_Vacants_Controller {
 
     }
 
+        @ApiOperation({ summary: 'Obtener todas las vacantes propias de un usuario publicadas ' })
     @Auth()
     @Get('get_all_own')
     get_own_allVacants(
@@ -77,6 +80,7 @@ export class Business_Vacants_Controller {
 
     }
 
+    @ApiOperation({ summary: 'Obtener una vacante por id' })
     @Get(':id')
     get_vacant(@Param('id', ParseUUIDPipe) _id: string) {
 
@@ -90,6 +94,7 @@ export class Business_Vacants_Controller {
 
     }
 
+    @ApiOperation({ summary: 'Editar una vacante por id' })
     @Put(':id')
     edit_vacant(@Param('id', ParseUUIDPipe) _id: string) {
 
@@ -103,6 +108,7 @@ export class Business_Vacants_Controller {
 
     }
 
+    @ApiOperation({ summary: 'Eliminar una vacante por id' })
     @Auth()
     @Delete(':id')
     delete_vacant(
@@ -121,6 +127,7 @@ export class Business_Vacants_Controller {
 
     }
 
+    @ApiOperation({ summary: 'Obtener todas las vacantes publicadas ' })
     @Post('get_all_public')
     get_public_allVacants(
         @Body() Search_Vacant_Dto: Search_Vacant_Dto

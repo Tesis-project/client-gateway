@@ -10,8 +10,10 @@ import { gw_UpdateUser_Dto } from '../dto/UpdateUser.dto';
 import {
     Pagination_Dto
 } from '@tesis-project/dev-globals/dist/core/dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 
+@ApiTags('Client gateway - User')
 @Controller('user')
 export class UserController {
 
@@ -19,6 +21,7 @@ export class UserController {
         @Inject(NATS_SERVICE) private readonly client: ClientProxy
     ) { }
 
+        @ApiOperation({ summary: 'Obtener todos los usuarios' })
     @Get()
     get_all_users(
         @Query() paginationDto: Pagination_Dto,
@@ -33,7 +36,7 @@ export class UserController {
         )
     }
 
-
+    @ApiOperation({ summary: 'Obtener un usuario por id' })
     @Get(':id')
     get_user(
         @Param('id', ParseUUIDPipe) _id: string
@@ -46,6 +49,7 @@ export class UserController {
         )
     }
 
+    @ApiOperation({ summary: 'Obtener un perfil de usuario por id' })
     @Get('profile/:id')
     get_oneProfile(
         @Param('id', ParseUUIDPipe) _id: string
@@ -58,7 +62,7 @@ export class UserController {
         )
     }
 
-
+    @ApiOperation({ summary: 'Actualizar un usuario por id' })
     @Auth()
     @Put('update/:id')
     update_user(
@@ -77,6 +81,4 @@ export class UserController {
     }
 
 }
-
-
 

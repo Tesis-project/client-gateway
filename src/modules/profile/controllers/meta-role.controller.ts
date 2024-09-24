@@ -7,8 +7,9 @@ import { Auth } from '../../../core/decorators';
 import { User_Auth } from '../../auth/decorators';
 import { User_I } from '@tesis-project/dev-globals/dist/modules/user/interfaces';
 import { catchError } from 'rxjs';
-import { Model_Dto } from '../dto/model.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Client gateway - Profile - /meta-role')
 @Controller('profile/meta-role')
 export class MetaRoleController {
 
@@ -17,6 +18,7 @@ export class MetaRoleController {
         private readonly client: ClientProxy
     ) { }
 
+        @ApiOperation({ summary: 'Obtener información meta de un usuario' })
     @Auth()
     @Get('get_meta')
     get_meta(@User_Auth() user_auth: User_I) {
@@ -31,6 +33,7 @@ export class MetaRoleController {
 
     }
 
+    @ApiOperation({ summary: 'Guardar información meta de un usuario artista' })
     @Auth()
     @Post('meta_a')
     set_metaArtist(@Body() Update_Meta_Artist_Dto: Update_Meta_Artist_Dto, @User_Auth() user_auth: User_I) {
@@ -46,6 +49,7 @@ export class MetaRoleController {
 
     }
 
+    @ApiOperation({ summary: 'Guardar información meta de un usuario contratista' })
     @Auth()
     @Post('meta_c')
     set_metaContratist(@Body() Update_Meta_Contratist_Dto: Update_Meta_Contratist_Dto, @User_Auth() user_auth: User_I) {

@@ -4,7 +4,12 @@ import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError } from "rxjs";
 
 import {Send_Email_Dto} from '@tesis-project/dev-globals/dist/modules/notifications/dto/send-email.dto'
+import { Auth } from "../../../core/decorators";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
+
+@ApiTags('Client gateway - Notify - /emailing')
+@Auth()
 @Controller('notify/emailing')
 export class EmailingController {
 
@@ -12,6 +17,7 @@ export class EmailingController {
         @Inject(NATS_SERVICE) private readonly client: ClientProxy
     ) { }
 
+    @ApiOperation({ summary: 'Emitir correo electrónico' })
     @Post('send')
     send_email( @Body() send_email: Send_Email_Dto) {
 

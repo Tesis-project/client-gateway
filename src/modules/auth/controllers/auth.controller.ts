@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Inject, ParseUUIDPipe, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Inject } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { catchError } from 'rxjs';
 
@@ -8,8 +8,9 @@ import { _Response_I } from '@tesis-project/dev-globals/dist/core/interfaces';
 import { NATS_SERVICE } from '../../../core/config/services';
 import { Auth } from '../../../core/decorators';
 import { User_Auth } from '../decorators';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags('Client gateway - Auth')
 @Controller('auth')
 export class AuthController {
 
@@ -17,6 +18,7 @@ export class AuthController {
         @Inject(NATS_SERVICE) private readonly client: ClientProxy
     ) { }
 
+    @ApiOperation({ summary: 'Registro de usuario' })
     @Post()
     registerUser(@Body() registerUserDto: RegisterAuth_Dto) {
         return this.client.send('auth.register.user', registerUserDto).pipe(
@@ -26,6 +28,7 @@ export class AuthController {
         )
     }
 
+    @ApiOperation({ summary: 'Inicio de sesión de usuario' })
     @Post('login')
     loginUser(@Body() loginUserDto: LoginAuth_Dto) {
 
@@ -35,9 +38,10 @@ export class AuthController {
 
     }
 
+    @ApiOperation({ summary: 'Validador de token de sesión de usuario' })
     @Auth()
     @Get('verify')
-    verifyUser( @User_Auth() auth: Session_Auth_I ) {
+    verifyUser(@User_Auth() auth: Session_Auth_I) {
 
         const resp: _Response_I<Session_Auth_I> = {
             ok: true,

@@ -10,8 +10,9 @@ import { Create_Postulation_Dto } from '@tesis-project/dev-globals/dist/modules/
 import { catchError } from 'rxjs';
 
 import {Evaluate_Postulation_Dto} from '@tesis-project/dev-globals/dist/modules/business/vacants/dto/Evaluate-postulation.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags('Client gateway - Business - /vacants/postulations')
     @Auth()
 @Controller('business/vacants/postulations')
 export class Business_Vacants_Postulations_Controller {
@@ -21,6 +22,7 @@ export class Business_Vacants_Postulations_Controller {
         @Inject(NATS_SERVICE) private readonly client: ClientProxy
     ) { }
 
+    @ApiOperation({ summary: 'Crear una postulación de usuario por id de vacante' })
     @Post('create/:vacant')
     async create_postulation(
         @Param('vacant', ParseUUIDPipe) vacant_id: string,
@@ -40,6 +42,7 @@ export class Business_Vacants_Postulations_Controller {
 
     }
 
+    @ApiOperation({ summary: 'Eliminar postulación por id' })
     @Delete(':id')
     delete_postulation(
         @Param('id', ParseUUIDPipe) _id: string,
@@ -57,6 +60,7 @@ export class Business_Vacants_Postulations_Controller {
 
     }
 
+    @ApiOperation({ summary: 'Obtener información de postulación por id de vacante' })
     @Get(':id')
     get_postulations_byVacant(
         @Param('id', ParseUUIDPipe) _id: string,
@@ -74,6 +78,7 @@ export class Business_Vacants_Postulations_Controller {
 
     }
 
+    @ApiOperation({ summary: 'Definir evaluación de postulación por id' })
     @Post('evaluate/:id')
     evaluate_postulation(
         @Param('id', ParseUUIDPipe) _id: string,

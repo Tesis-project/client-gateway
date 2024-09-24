@@ -26,6 +26,7 @@
         "@nestjs/mapped-types": "2.0.5",
         "@nestjs/microservices": "^10.3.10",
         "@nestjs/platform-express": "^10.3.10",
+        "@nestjs/swagger": "^7.4.2",
         "@tesis-project/dev-globals": "^1.0.780",
         "backblaze-b2": "^1.7.0",
         "class-transformer": "^0.5.1",
